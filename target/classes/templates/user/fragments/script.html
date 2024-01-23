@@ -7,6 +7,8 @@
     <!--22.12.2023-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
+    <!--23/1/2024-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
         // Hiển thị thông báo và tự động đóng
@@ -76,77 +78,6 @@
 <!--            }-->
 <!--        });-->
 <!--    </script>-->
-
-<!--    Hàm cập nhật giá trị cho giỏ hàng-->
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            // Gọi hàm updateTotalSubtotal khi trang được tải
-            updateTotalSubtotal();
-            // Xử lý sự kiện thay đổi quantity
-            $('.quantity-input').on('input', function() {
-                var cartId = $(this).attr('id').replace('quantity', '');
-                var newQuantity = $(this).val();
-                // Gọi API để cập nhật quantity trong cơ sở dữ liệu
-                updateQuantityInDatabase(cartId, newQuantity);
-                updateSubtotal(cartId);
-                updateTotalSubtotal();
-            });
-
-            // Hàm cập nhật giá trị subtotal của một sản phẩm
-            function updateSubtotal(cartId) {
-                var quantity = $('#quantity' + cartId).val();
-                var price = $('#price' + cartId).text();
-                var subtotal = quantity * price;
-
-                // Tạo đối tượng XMLHttpRequest để cập nhật luôn giá trị quantity vào CSDL
-                var xhr = new XMLHttpRequest();
-                // Đặt phương thức và đường dẫn của yêu cầu
-                xhr.open("POST", "/user/update-cart", true);
-                // Chuẩn bị dữ liệu để gửi đi
-                var formData = "?cartId=" + cartId + "&quantity=" + quantity;
-                // Gửi yêu cầu với dữ liệu
-                xhr.send(formData);
-
-                $('#result' + cartId).text(subtotal);
-            }
-
-            // Hàm cập nhật tổng giá trị subtotal
-            function updateTotalSubtotal() {
-                var totalSubtotal = 0;
-
-                // Duyệt qua các hàng trong tbody trừ hàng cuối cùng (Grand Total)
-                $('tbody tr:not(.title-top)').each(function() {
-                    var cartId = $(this).find('.quantity-input').attr('id').replace('quantity', '');
-                    var subtotal = parseFloat($('#result' + cartId).text()) || 0; // Đảm bảo lấy giá trị số
-
-                    totalSubtotal += subtotal;
-
-                });
-                var grandTotal = totalSubtotal + 70;
-                // Hiển thị tổng giá trị subtotal trong thẻ span
-                $('#cartTotal').text('$' + totalSubtotal.toFixed(2));
-                $('#grandTotal').text('$' + grandTotal);
-            }
-
-            // Hàm gọi API để cập nhật quantity trong cơ sở dữ liệu
-            function updateQuantityInDatabase(cartId, newQuantity) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/user/update-cart',
-                    data: {
-                        cartId: cartId,
-                        quantity: newQuantity
-                    },
-                    success: function(response) {
-                        console.log(response); // Hiển thị thông báo thành công trong console
-                    },
-                    error: function(error) {
-                        console.error(error); // Hiển thị thông báo lỗi trong console
-                    }
-                });
-            }
-        });
-    </script>
 
     //Truyen data vào Modal
     <script>
