@@ -1,0 +1,71 @@
+<!--<div id="quickview-wrapper" th:fragment="quickview">-->
+    <!-- Modal -->
+    <div class="modal fade" id="productmodal" tabindex="-1" role="dialog" th:fragment="quickview">
+        <div class="modal-dialog modal__container" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal__header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-product">
+                        <!-- Start product images -->
+                        <div class="product-images">
+                            <div class="main-image images">
+                                <img alt="big images" id="bookImage">
+                            </div>
+                        </div>
+                        <!-- end product images -->
+                        <div class="product-info  product__info__main">
+                            <h1 id="bookName"></h1>
+                            <p><b>Thể loại: </b><span id="bookCategory"></span></p>
+                            <div class="rating__and__review">
+                                <ul class="rating">
+                                    <li><span class="ti-star"></span></li>
+                                    <li><span class="ti-star"></span></li>
+                                    <li><span class="ti-star"></span></li>
+                                    <li><span class="ti-star"></span></li>
+                                    <li><span class="ti-star"></span></li>
+                                </ul>
+                            </div>
+                            <div class="price-box-3">
+                                <div class="s-price-box">
+                                    <span class="new-price" id="bookPrice"></span>
+                                    <span class="old-price" id="oldPrice"></span>
+                                </div>
+                            </div>
+                            <div class="quick-desc">
+                                <p>*** QUYỀN LỢI KHI MUA HÀNG:</p>
+
+                                <p>- Sản phẩm được đổi trả trong vòng 15 ngày với bất kỳ lỗi nào từ nhà sản xuất.</p>
+
+                                <p>- Lần mua tiếp theo sẽ được khuyến mãi 5%.</p>
+                            </div>
+
+                            <form th:action="@{/user/add-cart}">
+                                <div class="box-tocart d-flex">
+                                    <input type="hidden" id="bookId" name="bookId">
+                                    <span>Qantity</span>
+                                    <input id="quantity" name="quantity" class="input-text qty"  min="1" value="1"
+                                           title="Qty" type="number">
+                                    <div class="addtocart__actions">
+                                        <button class="tocart" type="submit" title="Add to Cart">Add to
+                                            Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <aside class="widget__categories sidebar--banner">
+                                <img th:src="@{/assets-user/images/others/banner_left.jpg}" alt="banner images">
+                                <div class="text">
+                                    <h2>new products</h2>
+                                    <h6>save up to <br> <strong>50%</strong> off</h6>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--</div>-->

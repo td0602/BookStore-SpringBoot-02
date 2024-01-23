@@ -1,0 +1,173 @@
+<div th:fragment="script">
+    <script th:src="@{/assets-user/js/vendor/jquery.min.js}"></script>
+    <script th:src="@{/assets-user/js/popper.min.js}"></script>
+    <script th:src="@{/assets-user/js/vendor/bootstrap.min.js}"></script>
+    <script th:src="@{/assets-user/js/plugins.js}"></script>
+    <script th:src="@{/assets-user/js/active.js}"></script>
+    <!--22.12.2023-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
+
+    <script>
+        // Hiển thị thông báo và tự động đóng
+        $(document).ready(function () {
+            $(".auto-close-alert").each(function () {
+                var timeout = $(this).data("timeout") || 2000; // Thời gian tính bằng mili giây (3 giây mặc định)
+                $(this).fadeIn();
+                var currentAlert = $(this);
+                window.setTimeout(function () {
+                    currentAlert.fadeOut();
+                }, timeout);
+            });
+        });
+    </script>
+
+<!--    <script th:inline="javascript">-->
+<!--        /* Dùng jQuery hoặc JavaScript thuần để xử lý sự kiện thay đổi quantity */-->
+<!--        $(document).ready(function() {-->
+<!--            $('.quantity-input').on('input', function() {-->
+<!--                var cartId = $(this).attr('id').replace('quantity', '');-->
+<!--                console.log(cartId);-->
+<!--                updateSubtotal(cartId);-->
+<!--            });-->
+
+<!--            function updateSubtotal(cartId) {-->
+<!--                var quantity = $('#quantity' + cartId).val();-->
+<!--                var price = $('#price' + cartId).text(); // Lấy giá trị từ span có th:id là 'price'+cartId-->
+<!--                var subtotal = quantity * price;-->
+<!--                console.log(quantity);-->
+<!--                console.log(price);-->
+<!--                $('#result' + cartId).text(subtotal);-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+
+<!--    <script th:inline="javascript">-->
+<!--        $(document).ready(function() {-->
+<!--            // Xử lý sự kiện thay đổi quantity-->
+<!--            $('.quantity-input').on('input', function() {-->
+<!--                var cartId = $(this).attr('id').replace('quantity', '');-->
+<!--                updateSubtotal(cartId);-->
+<!--                updateTotalSubtotal();-->
+<!--            });-->
+
+<!--            // Hàm cập nhật giá trị subtotal của một sản phẩm-->
+<!--            function updateSubtotal(cartId) {-->
+<!--                var quantity = $('#quantity' + cartId).val();-->
+<!--                var price = $('#price' + cartId).text();-->
+<!--                var subtotal = quantity * price;-->
+<!--                $('#result' + cartId).text(subtotal);-->
+<!--            }-->
+
+<!--            // Hàm cập nhật tổng giá trị subtotal-->
+<!--            function updateTotalSubtotal() {-->
+<!--                var totalSubtotal = 0;-->
+
+<!--                // Duyệt qua các hàng trong bảng-->
+<!--                $('tr').each(function() {-->
+<!--                    var cartId = $(this).find('.quantity-input').attr('id').replace('quantity', '');-->
+<!--                    var subtotal = parseFloat($('#result' + cartId).text()) || 0; // Đảm bảo lấy giá trị số-->
+
+<!--                    totalSubtotal += subtotal;-->
+<!--                });-->
+
+<!--                // Hiển thị tổng giá trị subtotal trong thẻ span-->
+<!--                $('#totalSubtotal').text('Total Subtotal: $' + totalSubtotal.toFixed(2));-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+
+<!--    Hàm cập nhật giá trị cho giỏ hàng-->
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            // Gọi hàm updateTotalSubtotal khi trang được tải
+            updateTotalSubtotal();
+            // Xử lý sự kiện thay đổi quantity
+            $('.quantity-input').on('input', function() {
+                var cartId = $(this).attr('id').replace('quantity', '');
+                var newQuantity = $(this).val();
+                // Gọi API để cập nhật quantity trong cơ sở dữ liệu
+                updateQuantityInDatabase(cartId, newQuantity);
+                updateSubtotal(cartId);
+                updateTotalSubtotal();
+            });
+
+            // Hàm cập nhật giá trị subtotal của một sản phẩm
+            function updateSubtotal(cartId) {
+                var quantity = $('#quantity' + cartId).val();
+                var price = $('#price' + cartId).text();
+                var subtotal = quantity * price;
+
+                // Tạo đối tượng XMLHttpRequest để cập nhật luôn giá trị quantity vào CSDL
+                var xhr = new XMLHttpRequest();
+                // Đặt phương thức và đường dẫn của yêu cầu
+                xhr.open("POST", "/user/update-cart", true);
+                // Chuẩn bị dữ liệu để gửi đi
+                var formData = "?cartId=" + cartId + "&quantity=" + quantity;
+                // Gửi yêu cầu với dữ liệu
+                xhr.send(formData);
+
+                $('#result' + cartId).text(subtotal);
+            }
+
+            // Hàm cập nhật tổng giá trị subtotal
+            function updateTotalSubtotal() {
+                var totalSubtotal = 0;
+
+                // Duyệt qua các hàng trong tbody trừ hàng cuối cùng (Grand Total)
+                $('tbody tr:not(.title-top)').each(function() {
+                    var cartId = $(this).find('.quantity-input').attr('id').replace('quantity', '');
+                    var subtotal = parseFloat($('#result' + cartId).text()) || 0; // Đảm bảo lấy giá trị số
+
+                    totalSubtotal += subtotal;
+
+                });
+                var grandTotal = totalSubtotal + 70;
+                // Hiển thị tổng giá trị subtotal trong thẻ span
+                $('#cartTotal').text('$' + totalSubtotal.toFixed(2));
+                $('#grandTotal').text('$' + grandTotal);
+            }
+
+            // Hàm gọi API để cập nhật quantity trong cơ sở dữ liệu
+            function updateQuantityInDatabase(cartId, newQuantity) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/update-cart',
+                    data: {
+                        cartId: cartId,
+                        quantity: newQuantity
+                    },
+                    success: function(response) {
+                        console.log(response); // Hiển thị thông báo thành công trong console
+                    },
+                    error: function(error) {
+                        console.error(error); // Hiển thị thông báo lỗi trong console
+                    }
+                });
+            }
+        });
+    </script>
+
+    //Truyen data vào Modal
+    <script>
+        $(document).ready(function() {
+            // Handle the show.bs.modal event when the modal is about to be shown
+            $('#productmodal').on('show.bs.modal', function (event) {
+                var click = $(event.relatedTarget); // Button that triggered the modal
+                var bookId = click.data('id');
+                var bookName = click.data('name'); // Extract product info from data-product attribute
+                var price = click.data('price');
+                var image = click.data('image');
+                var category = click.data('category');
+
+                // Update modal content based on productInfo
+                $('#bookId').val(bookId);
+                $('#bookName').text(bookName);
+                $('#bookPrice').text('$'+price);
+                $('#oldPrice').text('$'+price*2);
+                $('#bookImage').attr('src', '/uploads/books/'+image);
+                $('#bookCategory').text(category);
+            });
+        });
+    </script>
+</div>

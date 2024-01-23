@@ -1,0 +1,96 @@
+<header id="wn__header" class="header__area header__absolute sticky__header" th:fragment="header"
+        xmlns:sec="http://www.w3.org/1999/xhtml">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-6 col-lg-2">
+        <div class="logo">
+          <a href="/home">
+            <img th:src="@{/assets-user/images/logo/logo.png}" alt="logo images">
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-8 d-none d-lg-block">
+        <nav class="mainmenu__nav">
+          <ul class="meninmenu d-flex justify-content-start">
+            <li class="drop with--one--item"><a href="/home">Home</a></li>
+            <li class="drop"><a th:href="@{/grid-shop}">Books</a>
+              <div class="megamenu mega02">
+                <ul class="item item01">
+                  <li class="title">Categories</li>
+                  <div class="two-column-list m-lg-4">
+                    <li th:each="category:${categoryList}"><a th:href="@{'/grid-shop?categoryId='+${category.id}}" th:text="${category.categoryName}"> </a></li>
+                  </div>
+                </ul>
+              </div>
+            </li>
+            <li class="drop"><a href="#">Kids</a>
+              <div class="megamenu mega02">
+                <ul class="item dropdown">
+                  <li class="title">Top Collections</li>
+                  <li><a th:href="@{/grid-shop?categoryId=11}">Truyện tranh và Manga</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a th:href="@{/user/orders}">Orders</a></li>
+          </ul>
+        </nav>
+      </div>
+
+
+      <div class="col-md-6 col-sm-6 col-6 col-lg-2">
+        <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+          <li class="user-block" sec:authorize="isAuthenticated()">
+            <a th:href="@{/user/account}" th:text="${customUserDetails.user.fullName}"></a>
+          </li>
+          <li class="setting__bar__icon"><a class="setting__active" href="#"></a>
+            <div class="searchbar__content setting__block">
+              <div class="content-inner">
+                <div class="switcher-currency">
+                  <strong class="label switcher-label">
+                    <span>My Account</span>
+                  </strong>
+                  <div class="switcher-options">
+                    <div class="switcher-currency-trigger">
+                      <div class="setting__menu">
+                        <!--Cần thêm vào maven: thymeleaf-extras-springsecurity6, 6 hay 5 tùy vào version springsecurity đang dùng-->
+                        <span sec:authorize="isAuthenticated()"><a th:href="@{/user/account}">My Account</a></span>
+                        <span sec:authorize="!isAuthenticated()">
+                            <a th:href="@{/logon}">Sign In</a>
+                            <a href="/register">Create An Account</a>
+                        </span>
+                        <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Sign Out</a></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <!-- Start Shopping Cart -->
+          <li class="shopcart">
+            <a th:href="@{/user/cart}"></a>
+          </li>
+          <!-- End Shopping Cart -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Start Mobile Menu -->
+    <div class="row d-none">
+      <div class="col-lg-12 d-none">
+        <nav class="mobilemenu__nav">
+          <ul class="meninmenu">
+            <li><a th:href="@{/home}">Home</a>
+            </li>
+            <li><a th:href="@{/user/contact}">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!-- End Mobile Menu -->
+    <div class="mobile-menu d-block d-lg-none">
+    </div>
+    <!-- Mobile Menu -->
+  </div>
+</header>

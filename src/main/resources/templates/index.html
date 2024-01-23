@@ -1,0 +1,253 @@
+<html class="no-js" lang="zxx" xmlns:th="https://www.thymeleaf.org">
+
+
+<!-- Mirrored from htmldemo.net/boighor/boighor/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 06 Dec 2023 17:01:18 GMT -->
+
+<head th:replace="~{/user/fragments/head::head}"></head>
+<head>
+  <!-- Thêm thymeleaf namespace -->
+  <script th:inline="javascript">
+    var book = /*[[${book}]]*/ null;
+  </script>
+</head>
+<body>
+
+<!--ALERT-->
+<div th:if="${successMessage}" class="alert alert-success alert-dismissible auto-close-alert text-center">
+<!--  <button type="button" class="close" data-dismiss="alert auto-close-alert" aria-hidden="true">×</button>-->
+  <h4><i class="icon fa fa-check"></i> <span th:text="${successMessage}"></span></h4>
+  Success
+</div>
+
+<div th:if="${errorMessage}" class="alert alert-danger alert-dismissible auto-close-alert text-center">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+  <h4><i class="icon fa fa-ban"></i> <span th:text="${errorMessage}"></span></h4>
+  !
+</div>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+  <!-- Header -->
+
+  <header th:replace="~{/user/fragments/header::header}"></header>
+
+  <!-- //Header -->
+  <!-- Start Search Popup -->
+  <div th:replace="~{/user/fragments/search::search}"></div>
+  <!-- Start Slider area -->
+
+  <div th:replace="~{/user/fragments/slider::slider}"></div>
+
+  <!-- End Slider area -->
+  <!-- New product -->
+  <section class="wn__product__area brown--color pt--80 pb--30 main-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-wrap">
+            <div class="section__title-2">
+              <h2 class="title__be--2">NEW <span class="color--theme">BOOKS</span></h2>
+            </div>
+            <div class="custom-nav">
+              <button type="button" class="customPrevBtn"><i
+                      class="zmdi zmdi-chevron-left"></i></button>
+              <button type="button" class="customNextBtn"><i
+                      class="zmdi zmdi-chevron-right"></i></button>
+            </div>
+          </div>
+          <!-- Start Single Tab Content -->
+          <div class="furniture--4 border--round arrows_style--2 owl-carousel owl-theme mt--50">
+            <!-- Start Single Product -->
+            <div class="product product__style--3" th:each="book:${newBooks}">
+              <div class="product__thumb">
+                <a class="first__img" th:href="@{'/single-book/'+${book.id}}"><img th:src="@{'/uploads/books/'+${book.image}}"
+                                                                      alt="product image" width="150" height="350"></a>
+                <a class="second__img animation1" th:href="@{'/single-book/'+${book.id}}"><img
+                        th:src="@{/assets-user/images/books/bookdetail.jpg}" alt="product image" width="150" height="350">></a>
+                <div class="hot__box">
+                  <span class="hot-label">BEST SALLER</span>
+                </div>
+              </div>
+              <div class="product__content content--center">
+                <h4><a href="single-product.html" th:text="${book.bookName}"></a></h4>
+                <ul class="price d-flex">
+                  <li>$<span th:text="${book.price}"></span></li>
+                  <li class="old_price">$<span th:text="${book.price*2}"></span></li>
+                </ul>
+                <div class="action">
+                  <div class="actions_inner">
+                    <ul class="add_to_links">
+                      <li><a class="cart" th:href="@{'/user/order?bookId='+${book.id}}"><i
+                              class="bi bi-shopping-bag4"></i></a></li>
+                      <li><a th:href="@{'/user/add-cart?bookId='+${book.id}}"><i
+                              class="bi bi-shopping-cart-full"></i></a></li>
+                      <li><a data-bs-toggle="modal" title="Quick View"
+                             class="quickview modal-view detail-link"
+                             data-bs-target="#productmodal"
+                             th:data-id="${book.id}" th:data-name="${book.bookName}" th:data-image="${book.image}" th:data-price="${book.price}" th:data-category="${book.category.categoryName}"
+                              ><i class="bi bi-search"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="product__hover--content">
+                  <ul class="rating d-flex">
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li><i class="fa fa-star-o"></i></li>
+                    <li><i class="fa fa-star-o"></i></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- End Single Tab Content -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Start BEst Seller Area -->
+
+  <!-- All product -->
+  <section class="wn__bestseller__area x-mas_bestseller bg--white pt--80  pb--30">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product-section_area d-flex justify-content-between">
+            <div class="section__title">
+              <h2 class="title__be--2">All <span class="color--theme">Books</span></h2>
+            </div>
+            <div class="product__nav nav d-block" role="tablist">
+              <a class="nav-item nav-link active" data-bs-toggle="tab" href="#nav-all" role="tab">ALL</a>
+              <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-biographic"
+                 role="tab">BIOGRAPHIC</a>
+              <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-adventure"
+                 role="tab">ADVENTURE</a>
+              <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-children"
+                 role="tab">CHILDREN</a>
+              <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-cook" role="tab">COOK</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab__container tab-content mt--60">
+        <!-- Start Single Tab Content -->
+        <div class=" single__tab tab-pane fade show active" id="nav-all" role="tabpanel">
+          <div class="product__indicator--4 arrows_style owl-carousel owl-theme">
+            <div class="single__product" th:each="index : ${#numbers.sequence(0, allBooks.size() - 1, 2)}">
+              <!-- Start Single Product -->
+              <div class="single__product__inner" th:with="book1=${allBooks[__${index}__]}">
+                <div class="product product__style--3">
+                  <div class="product__thumb">
+                    <a class="first__img" href="single-product.html"><img
+                            th:src="@{'/uploads/books/'+${book1.image}}" alt="product image" width="150" height="350"></a>
+                    <a class="second__img animation1" th:href="@{'/single-book/'+${book1.id}}"><img
+                            th:src="@{/assets-user/images/books/bookdetail.jpg}" alt="product image" width="150" height="350"></a>
+                    <div class="hot__box">
+                      <span class="hot-label">BEST SALER</span>
+                    </div>
+                  </div>
+                  <div class="product__content content--center content--center">
+                    <h4><a href="single-product.html" th:text="${book1.bookName}"></a></h4>
+                    <ul class="price d-flex">
+                      <li>$<span th:text="${book1.price}"></span></li>
+                      <li class="old_price">$<span th:text="${book1.price*2}"></span></li>
+                    </ul>
+                    <div class="action hot__box">
+                      <div class="actions_inner">
+                        <ul class="add_to_links">
+                          <li><a class="cart" th:href="@{'/user/order?bookId='+${book1.id}}"><i
+                                  class="bi bi-shopping-bag4"></i></a></li>
+                          <li><a class="wishlist" th:href="@{'/user/add-cart?bookId='+${book1.id}}"><i
+                                  class="bi bi-shopping-cart-full"></i></a></li>
+                          <li><a data-bs-toggle="modal" title="Quick View"
+                                 data-bs-target="#productmodal"
+                                 class="quickview modal-view detail-link"
+                                 th:data-id="${book1.id}" th:data-name="${book1.bookName}" th:data-image="${book1.image}" th:data-price="${book1.price}" th:data-category="${book1.category.categoryName}"
+                          ><i class="bi bi-search"></i></a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="product__hover--content">
+                      <ul class="rating d-flex">
+                        <li class="on"><i class="fa fa-star-o"></i></li>
+                        <li class="on"><i class="fa fa-star-o"></i></li>
+                        <li class="on"><i class="fa fa-star-o"></i></li>
+                        <li><i class="fa fa-star-o"></i></li>
+                        <li><i class="fa fa-star-o"></i></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Start Single Product -->
+              <div class="single__product__inner" th:if="${index+1 <= allBooks.size()-1}" th:with="book2=${allBooks[__${index+1}__]}">
+                <div class="product product__style--3">
+                  <div class="product__thumb">
+                    <a class="first__img" href="single-product.html"><img
+                            th:src="@{'/uploads/books/'+${book2.image}}" alt="product image" width="150" height="350"></a>
+                    <a class="second__img animation1" th:href="@{'/single-book/'+${book2.id}}"><img
+                            th:src="@{/assets-user/images/books/bookdetail.jpg}" alt="product image" width="150" height="350">></a>
+                    <div class="hot__box">
+                      <span class="hot-label">BEST SALER</span>
+                    </div>
+                  </div>
+                  <div class="product__content content--center content--center">
+                    <h4><a href="single-product.html" th:text="${book2.bookName}"></a></h4>
+                    <ul class="price d-flex">
+                      <li>$<span th:text="${book2.price}"></span></li>
+                      <li class="old_price">$<span th:text="${book2.price*2}"></span></li>
+                    </ul>
+                    <div class="action">
+                      <div class="actions_inner">
+                        <ul class="add_to_links">
+                          <li><a class="cart" th:href="@{'/user/order?bookId='+${book2.id}}"><i
+                                  class="bi bi-shopping-bag4"></i></a></li>
+                          <li><a class="wishlist" th:href="@{'/user/add-cart?bookId='+${book2.id}}"><i
+                                  class="bi bi-shopping-cart-full"></i></a></li>
+                          <!--Chu ys: data-<chu in thuong> -->
+                          <li><a data-bs-toggle="modal" title="Quick View"
+                                 data-bs-target="#productmodal"
+                                 class="quickview modal-view detail-link"
+                                 th:data-id="${book2.id}" th:data-name="${book2.bookName}" th:data-image="${book2.image}" th:data-price="${book2.price}" th:data-category="${book2.category.categoryName}"
+                                 ><i class="bi bi-search"></i></a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="product__hover--content">
+                      <ul class="rating d-flex">
+                        <li class="on"><i class="fa fa-star-o"></i></li>
+                        <li class="on"><i class="fa fa-star-o"></i></li>
+                        <li class="on"><i class="fa fa-star-o"></i></li>
+                        <li><i class="fa fa-star-o"></i></li>
+                        <li><i class="fa fa-star-o"></i></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Start Single Product -->
+            </div>
+        </div>
+        <!-- End Single Tab Content -->
+      </div>
+    </div>
+    </div>
+  </section>
+  <!-- Start BEst Seller Area -->
+  <!-- Footer Area -->
+  <footer class="align-bottom" th:replace="~{/user/fragments/footer::footer}"></footer>
+  <!-- //Footer Area -->
+  <!-- QUICKVIEW PRODUCT -->
+  <div th:replace="~{/user/fragments/quickview::quickview}"></div>
+  <!-- END QUICKVIEW PRODUCT -->
+  <div th:replace="~{/user/fragments/search::search}"></div>
+</div>
+<div th:replace="~{/user/fragments/script::script}"></div>
+</body>
+</html>
